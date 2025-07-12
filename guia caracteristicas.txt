@@ -1,0 +1,352 @@
+CARACTERÍSTICAS ACTUALES - ESTACIÓN METEOROLÓGICA TFT
+====================================================
+
+HARDWARE SOPORTADO:
+==================
+✅ Pantalla TFT ILI9341 320x240 píxeles
+✅ Sensor BME280 interior (temp/humedad/presión)
+✅ Módulo ESP32 exterior vía MQTT
+✅ LEDs NeoPixel (2x) para indicadores visuales
+✅ Botón físico para navegación
+✅ Raspberry Pi como controlador principal
+
+CONECTIVIDAD:
+============
+✅ MQTT local para datos del ESP32 exterior
+✅ WiFi para comunicación
+✅ Integración ThingsBoard (configurada)
+✅ Logs del sistema
+✅ Servicio systemd para auto-arranque
+
+MONITOREO AMBIENTAL:
+===================
+✅ Temperatura interior y exterior
+✅ Humedad interior y exterior  
+✅ Presión atmosférica
+✅ Sensación térmica calculada
+✅ Historial de 24 horas
+✅ Tendencias (subida/bajada/estable)
+✅ Estadísticas diarias (máx/mín/promedio/variación)
+
+ALERTAS CLIMÁTICAS:
+==================
+✅ Helada (< 0°C) - Azul parpadeante
+✅ Helada extrema (< -5°C) - Azul intenso
+✅ Calor extremo (≥ 35°C) - Rojo parpadeante
+✅ Peligro por calor (≥ 40°C) - Rojo intenso
+✅ Temperatura óptima (23-26°C) - Verde
+✅ Cambios bruscos de temperatura
+✅ Pérdida de conexión con sensor exterior
+
+SISTEMA DE LEDS NEOPIXEL (2 LEDs):
+=================================
+
+LED 0 - ESTADO DEL SISTEMA:
+---------------------------
+✅ 🟢 Verde sólido - ESP32 online, datos recientes (<5 min)
+✅ 🟡 Amarillo sólido - ESP32 online, datos antiguos (5-10 min)
+✅ 🟠 Naranja sólido - ESP32 online, datos muy antiguos (>10 min)
+✅ 🔴 Rojo sólido - ESP32 offline o sin conexión
+✅ ⚫ Apagado - Sistema en error crítico
+
+LED 1 - ESTADO CLIMÁTICO (Temperatura Exterior):
+------------------------------------------------
+✅ 🟣 Violeta parpadeante - Helada extrema (< -5°C)
+✅ 🔵 Azul parpadeante - Helada (-5°C a 0°C)
+✅ 🔵 Azul sólido - Muy frío (0°C a 10°C)
+✅ 🔷 Cian sólido - Frío (10°C a 18°C)
+✅ 🟢 Verde claro - Fresco (18°C a 23°C)
+✅ 🟢 Verde sólido - Óptimo (23°C a 26°C)
+✅ 🟡 Amarillo sólido - Cálido (26°C a 30°C)
+✅ 🟠 Naranja sólido - Caluroso (30°C a 35°C)
+✅ 🔴 Rojo parpadeante - Extremo (≥ 35°C)
+✅ ⚫ Gris - Sin datos o sensor desconectado
+
+MONITOREO DEL SISTEMA:
+=====================
+✅ Uso de CPU en tiempo real
+✅ Uso de RAM
+✅ Temperatura del procesador
+✅ Señal WiFi
+✅ Tiempo de funcionamiento (uptime)
+✅ Nivel de batería (simulado)
+✅ Estado de sensores (online/offline)
+
+ALERTAS DEL SISTEMA:
+===================
+✅ CPU alta (>85%) - Rojo
+✅ Temperatura CPU alta (>75°C) - Naranja  
+✅ RAM alta (>85%) - Amarillo
+✅ WiFi débil (<40%) - Indicador visual
+✅ Sensores desconectados
+
+INDICADORES VISUALES DEL SISTEMA EN PANTALLA:
+============================================
+
+PUNTOS DE ESTADO (Pequeños círculos en tarjetas):
+------------------------------------------------
+✅ 🟢 Verde - Sensor funcionando correctamente
+✅ 🟡 Amarillo - Sensor con advertencias
+✅ 🔴 Rojo - Sensor con errores o desconectado
+✅ ⚫ Gris - Sensor no disponible
+
+COLORES DE TEXTO PARA MÉTRICAS DEL SISTEMA:
+==========================================
+✅ 🟢 Verde (system-good):
+   - CPU/RAM < 60%
+   - Temp CPU < 60°C  
+   - WiFi > 70%
+   - Uptime normal
+
+✅ 🟡 Amarillo (system-warning):
+   - CPU/RAM 60-80%
+   - Temp CPU 60-70°C
+   - WiFi 40-70%
+   - Advertencias menores
+
+✅ 🔴 Rojo (system-danger):
+   - CPU/RAM > 80%
+   - Temp CPU > 70°C
+   - WiFi < 40%
+   - Errores críticos
+
+ALERTAS EMERGENTES DEL SISTEMA:
+==============================
+✅ "CPU HIGH" - Fondo rojo parpadeante (CPU > 85%)
+✅ "TEMP HIGH" - Fondo naranja parpadeante (CPU > 75°C)
+✅ "RAM HIGH" - Fondo amarillo parpadeante (RAM > 85%)
+✅ "WIFI LOW" - Fondo gris parpadeante (WiFi < 30%)
+
+ESTADOS DE CONECTIVIDAD:
+=======================
+✅ "ONLINE" - Verde brillante (ESP32 conectado)
+✅ "OFFLINE" - Rojo brillante (ESP32 desconectado)
+✅ "TIMEOUT" - Naranja (ESP32 sin respuesta)
+✅ "ERROR" - Rojo parpadeante (Error de comunicación)
+
+INTERFAZ VISUAL:
+===============
+✅ Dos pantallas navegables
+✅ Gráficos en tiempo real (líneas y barras)
+✅ Indicadores LED de estado
+✅ Modo nocturno automático (20:00-07:00)
+✅ Animaciones y efectos visuales
+✅ Colores codificados por estado
+✅ Tipografía monoespaciada para datos
+✅ Layout optimizado para 320x240
+
+FUNCIONALIDADES AVANZADAS:
+==========================
+✅ Modo de prueba para desarrollo
+✅ Configuración centralizada
+✅ Logging estructurado
+✅ Gestión de errores
+✅ Abstracción de hardware
+✅ Instalación automatizada
+✅ Servicio de sistema
+
+PATRONES DE PARPADEO ESPECÍFICOS:
+================================
+
+PARPADEO RÁPIDO (3 Hz):
+----------------------
+✅ Helada extrema (< -5°C)
+✅ Alertas críticas del sistema
+✅ Pérdida total de conectividad
+
+PARPADEO MEDIO (2 Hz):
+---------------------
+✅ Calor extremo (≥ 35°C)
+✅ Helada normal (< 0°C)
+✅ Alertas importantes
+
+PARPADEO LENTO (1 Hz):
+---------------------
+✅ Advertencias del sistema
+✅ Datos antiguos
+✅ Conexión intermitente
+
+PULSO SUAVE (0.5 Hz):
+--------------------
+✅ Sensor interior funcionando
+✅ Sistema en modo normal
+✅ Indicadores de estado OK
+
+
+CARACTERÍSTICAS QUE SE PODRÍAN AÑADIR:
+=====================================
+
+MEJORAS EN SISTEMA DE LEDS:
+==========================
+🔄 LED 2 adicional - Estado de red/internet
+🔄 LED 3 adicional - Estado de almacenamiento/SD
+🔄 Patrones de parpadeo más complejos
+🔄 Colores RGB personalizables por usuario
+🔄 Modo "arcoíris" para test de LEDs
+🔄 Brillo automático según hora del día
+🔄 Secuencias de arranque/apagado
+🔄 Indicador de nivel de batería en LEDs
+🔄 Modo silencioso (LEDs atenuados)
+🔄 Alertas por secuencias de colores
+
+NUEVOS ESTADOS CLIMÁTICOS:
+=========================
+🔄 Indicador de humedad alta (>80%) - Azul claro
+🔄 Indicador de humedad baja (<30%) - Amarillo claro
+🔄 Alerta de tormenta (presión <990 hPa) - Violeta parpadeante
+🔄 Viento fuerte - Blanco parpadeante
+🔄 Lluvia detectada - Azul corriendo
+🔄 Nieve probable - Blanco suave
+🔄 Niebla (humedad >95%) - Gris parpadeante
+🔄 Calidad aire mala - Marrón
+🔄 UV alto - Magenta
+🔄 Sequía prolongada - Amarillo intenso
+
+ALERTAS AVANZADAS DEL SISTEMA:
+=============================
+🔄 Temperatura SD card alta - Naranja
+🔄 Espacio disco bajo - Rojo intermitente
+🔄 Actualizaciones disponibles - Azul suave
+🔄 Backup fallido - Rojo doble parpadeo
+🔄 Sensor descalibrado - Amarillo rotativo
+🔄 Batería baja - Rojo fade in/out
+🔄 Sobrecarga de red - Blanco rápido
+🔄 Error de logs - Violeta
+🔄 Reinicio requerido - Todos los colores
+🔄 Modo mantenimiento - Naranja rotativo
+
+HARDWARE ADICIONAL:
+==================
+🔄 Sensor de luz ambiente (ajuste brillo automático)
+🔄 Sensor de movimiento PIR (encendido automático)
+🔄 Buzzer para alertas sonoras
+🔄 Sensor de lluvia
+🔄 Anemómetro (velocidad del viento)
+🔄 Sensor UV
+🔄 Cámara para time-lapse del clima
+🔄 Pantalla táctil para navegación
+🔄 Módulo RTC para hora precisa sin internet
+🔄 Sensor de calidad del aire (PM2.5, CO2)
+
+CONECTIVIDAD AMPLIADA:
+=====================
+🔄 Servidor web local para acceso remoto
+🔄 API REST para integración con otros sistemas
+🔄 Notificaciones push a móvil
+🔄 Integración con Telegram/WhatsApp
+🔄 Sincronización con servicios meteorológicos
+🔄 Backup automático a la nube
+🔄 Múltiples sensores exteriores (jardín, terraza, etc.)
+🔄 Protocolo LoRa para mayor alcance
+🔄 Integración con Home Assistant
+🔄 MQTT seguro con certificados
+
+ANÁLISIS Y PREDICCIÓN:
+=====================
+🔄 Predicción del tiempo basada en presión
+🔄 Alertas de tormenta por caída de presión
+🔄 Cálculo de punto de rocío
+🔄 Índice de confort térmico
+🔄 Predicción de heladas
+🔄 Análisis de patrones estacionales
+🔄 Machine Learning para predicciones
+🔄 Correlación con datos meteorológicos oficiales
+🔄 Alertas personalizadas por usuario
+🔄 Histórico extendido (semanas/meses)
+
+INTERFAZ MEJORADA:
+=================
+🔄 Pantalla de configuración
+🔄 Múltiples temas visuales
+🔄 Gráficos más avanzados (barométrico, rosa de vientos)
+🔄 Pantalla de calibración de sensores
+🔄 Modo de ahorro de energía
+🔄 Pantalla de diagnóstico completo
+🔄 Widgets personalizables
+🔄 Zoom en gráficos
+🔄 Comparación entre días/semanas
+🔄 Exportación de datos
+
+AUTOMATIZACIÓN:
+==============
+🔄 Control de riego automático
+🔄 Activación de calefacción/ventilación
+🔄 Cierre automático de ventanas por lluvia
+🔄 Encendido de luces por baja luminosidad
+🔄 Programación de tareas por condiciones
+🔄 Integración con domótica
+🔄 Escenarios automáticos
+🔄 Control por voz (Alexa/Google)
+🔄 Geofencing para activación
+🔄 Horarios programables
+
+SEGURIDAD Y BACKUP:
+==================
+🔄 Autenticación de usuarios
+🔄 Encriptación de datos
+🔄 Backup automático local y remoto
+🔄 Recuperación ante fallos
+🔄 Logs de seguridad
+🔄 Actualizaciones OTA (Over The Air)
+🔄 Modo de recuperación
+🔄 Validación de integridad de datos
+🔄 Alertas de intrusión
+🔄 Acceso por VPN
+
+ANÁLISIS AVANZADO:
+=================
+🔄 Dashboard web completo
+🔄 Reportes automáticos por email
+🔄 Comparación con años anteriores
+🔄 Alertas de anomalías
+🔄 Exportación a Excel/CSV
+🔄 Gráficos de correlación
+🔄 Análisis de eficiencia energética
+🔄 Predicción de consumos
+🔄 Alertas de mantenimiento
+🔄 Estadísticas de uso del sistema
+
+CARACTERÍSTICAS PREMIUM:
+========================
+🔄 Múltiples ubicaciones
+🔄 Alertas meteorológicas oficiales
+🔄 Integración con estaciones profesionales
+🔄 Calibración automática
+🔄 Redundancia de sensores
+🔄 Modo profesional con más datos
+🔄 Exportación para investigación
+🔄 API para desarrolladores
+🔄 Plugins de terceros
+🔄 Soporte técnico remoto
+
+PRIORIDADES RECOMENDADAS:
+========================
+
+ALTA PRIORIDAD:
+- Servidor web para acceso remoto
+- Sensor de lluvia con LED indicador
+- Alertas por Telegram/WhatsApp
+- Backup automático de datos
+- Predicción básica del tiempo
+- LEDs adicionales para más estados
+
+MEDIA PRIORIDAD:
+- Sensor de luz ambiente
+- Múltiples sensores exteriores
+- Dashboard web avanzado
+- Control de dispositivos básico
+- Histórico extendido
+- Patrones de LED personalizables
+
+BAJA PRIORIDAD:
+- Machine Learning
+- Integración con servicios externos
+- Características premium
+- Automatización compleja
+- APIs avanzadas
+
+ESTIMACIÓN DE COMPLEJIDAD:
+=========================
+🟢 Fácil (1-2 días): Sensor lluvia, buzzer, backup local, LEDs adicionales
+🟡 Medio (1 semana): Web server, Telegram, múltiples sensores, patrones LED
+🔴 Difícil (1+ mes): ML, automatización, APIs complejas, sistema LED avanzado
