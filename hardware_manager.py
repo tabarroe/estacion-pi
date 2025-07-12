@@ -207,7 +207,7 @@ class HardwareManager:
 
 #--------------------------------------------------------------------
 
-    def draw_page_main(self, data_store, temp_history, status_info, active_alert, active_alert_change, blink_state):
+    def draw_page_main(self, data_store, temp_history, status_info, active_alert, blink_state):
         """Dibuja el dashboard principal con el layout final corregido."""
         if not self.tft_device: return
         from luma.core.render import canvas
@@ -261,9 +261,16 @@ class HardwareManager:
         
         # --- DIBUJAR ICONO DE ALERTA (SI HAY) ---
             alert_icon_to_draw = None
-            if active_alert and blink_state:
+            if active_alert and blink_state: 
                 icon_name = "helada" if active_alert == "HELADA" else "calor_extremo"
-                alert_icon_to_draw = self.icons.get(icon_name)
+            
+                alert_icon = self.icons.get(icon_name)
+            if alert_icon:
+                # Lo dibujamos en la esquina inferior derecha
+                alert_canvas = Image.new("RGBA", self.tft_device.size)
+                # La posición aquí es relativa al lienzo de la pantalla
+                alert_canvas.paste(alert_icon, (280, 200), alert_icon) 
+                draw.bitmap((0, 0), alert_canvas, fill=None)
                 
             # La nueva alerta de cambio brusco tiene prioridad
             if active_alert_change and blink_state:

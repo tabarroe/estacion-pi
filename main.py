@@ -371,7 +371,7 @@ class WeatherStation:
         """Decide qué página dibujar en la TFT."""
         if not self.is_backlight_on: return
 
-        # --- CONSTRUIR EL DICCIONARIO DE ESTADO ---
+        # Creamos el diccionario de estado que necesitan las funciones de dibujo
         minutes_ago = None
         if self.last_exterior_msg_time:
             minutes_ago = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
@@ -380,11 +380,11 @@ class WeatherStation:
             "exterior_online": minutes_ago is not None and minutes_ago < EXTERIOR_TIMEOUT_OFFLINE,
             "minutes_ago": minutes_ago
         }
-        # -----------------------------------------
 
         if self.current_page == 0:
             self.hw_manager.draw_page_main(self.data_store, self.temp_history_ext, status_info, self.active_alert, self.blink_state)
         elif self.current_page == 1:
+            # La página de estadísticas sigue funcionando como antes
             self.hw_manager.draw_page_stats(self.stats_data, self.data_store["interior"])
 #-------------------------------------------------------------------------------
 
