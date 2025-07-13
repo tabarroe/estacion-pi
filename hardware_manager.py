@@ -163,19 +163,26 @@ class HardwareManager:
             val_range = max_val - min_val if max_val != min_val else 1.0
 
             points = []
-            # Definimos el área real de dibujo para la línea, dejando márgenes
             graph_area_h = height - 40  # Altura disponible para la línea
-            graph_y_start = 30          # Donde empieza el área del gráfico
+            graph_y_start = 30          # Donde empieza el área del gráfico en Y
             graph_x_start = 10
             graph_width = width - 20
             
             for i, val in enumerate(history):
-                # Coordenada X
+                # Coordenada X (esta parte estaba bien)
                 px = graph_x_start + int((i / (len(history) - 1)) * graph_width)
                 
-                # Coordenada Y
-                py_normalized = (val - min_val) / val_range
-                py = graph_y_start + graph_area_h - int(py_normalized * (graph_area_h - 10)) # Margen superior/inferior
+                # --- FÓRMULA DE COORDENADA Y CORREGIDA ---
+                # Normalizamos el valor de temperatura (0.0 a 1.0)
+                if val_range > 0:
+                    py_normalized = (val - min_val) / val_range
+                else:
+                    py_normalized = 0.5 # Si no hay rango, lo ponemos en el medio
+
+                # Invertimos el eje Y (0 es arriba) y lo escalamos a la altura del gráfico
+                py = graph_y_start + graph_area_h - int(py_normalized * graph_area_h)
+                # -------------------------------------------
+                
                 points.append((px, py))
                 
             if len(points) > 1:
