@@ -41,7 +41,8 @@ class WeatherStation:
         self.pressure_history = deque(maxlen=30)
         self.temp_history_ext = deque(maxlen=60)
         self.temp_history_int = deque(maxlen=30)
-        
+        hourly_template = [None, None, 0.0, 0]
+        self.hourly_stats = [list(hourly_template) for _ in range(24)]
         # Almacén para tendencia de presión y temperatura
         self.pressure_history = deque(maxlen=30)
         self.temp_history_ext = deque(maxlen=60)
@@ -56,6 +57,7 @@ class WeatherStation:
         self.mqtt_local_connected = False
         self.blink_state = False
         self.current_page = 0
+        self.total_pages = 3
         self.last_button_press_time = 0
         self.last_activity_time = time.time()
         self.is_backlight_on = True
@@ -66,12 +68,21 @@ class WeatherStation:
 
     # --- Funciones de Cálculo ---
     def update_stats(self, location, temp):
-        if temp is None: return
+        if temp is None or location != "exterior": return
         current_max = self.stats_data[location]["temp_max"]
         current_min = self.stats_data[location]["temp_min"]
         if current_max is None or temp > current_max: self.stats_data[location]["temp_max"] = temp
         if current_min is None or temp < current_min: self.stats_data[location]["temp_min"] = temp
+        current_hour = datetime.now().hour
+        hour_stats = self.hourly_stats[current_hour]
+        if hour_stats[0] is None or temp < hour_stats[0]:
+            hour_stats[0] = temp # min
+        if hour_stats[1] is None or temp > hour_stats[1]:
+            hour_stats[1] = temp # max
         
+        # Actualizar suma y contador para el promedio
+        hour_stats[2] += temp # sum
+        hour_stats[3] += 1 
         # --- NUEVA LÓGICA PARA EL PROMEDIO ---
         self.stats_data[location]["temp_sum"] = self.stats_data[location].get("temp_sum", 0.0) + temp
         self.stats_data[location]["reading_count"] = self.stats_data[location].get("reading_count", 0) + 1
@@ -82,6 +93,9 @@ class WeatherStation:
             logger.info("Reseteando estadísticas de 24 horas.")
             self.stats_data = {"interior": {"temp_max": None, "temp_min": None}, "exterior": {"temp_max": None, "temp_min": None, "temp_sum": 0.0, "reading_count": 0}}
             self.last_stats_reset = time.time()
+            hourly_template = [None, None, 0.0, 0]
+            self.hourly_stats = [list(hourly_template) for _ in range(24)]
+            
 #------------------------------------------------------------
     def check_rapid_temp_change(self):
         """Comprueba si ha habido un cambio de temperatura brusco."""
@@ -224,6 +238,7 @@ class WeatherStation:
                     self.temp_history_ext.append(value)
                     self.calculate_temp_trend("exterior")
                     self.temp_change_history.append((time.time(), value))
+                    logger.info(f"Nuevo dato de temperatura añadido al historial. Tamaño actual: {len(self.temp_history_ext)}")
                     self.check_rapid_temp_change()
                     
                 elif sensor_type == "humedad":
@@ -370,7 +385,33 @@ class WeatherStation:
     def task_draw_display(self):
         """Decide qué página dibujar en la TFT."""
         if not self.is_backlight_on: return
+        minutes_ago = None
+        if self.last_exterior_msg_time:
+            minutes_ago = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
+        is_online = minutes_ago is not None and minutes_ago < EXTERIOR_TIMEOUT_OFFLINE
 
+        status_info = {
+            "exterior_online": is_online,
+            "minutes_ago": minutes_ago
+        }
+        # --- LÓGICA DE DIBUJO CON 3 PÁGINAS ---
+        if self.current_page == 0:
+            # Le pasamos todos los argumentos que necesita
+            self.hw_manager.draw_page_main(
+                self.data_store, 
+                self.temp_history_ext, 
+                status_info, 
+                self.active_alert, 
+                self.active_alert_change, 
+                self.blink_state
+                )
+        elif self.current_page == 1:
+            # La página de estadísticas sigue funcionando como antes
+            self.hw_manager.draw_page_stats(self.stats_data, self.data_store["interior"])
+        elif self.current_page == 2:
+            # La página del gráfico de barras
+            self.hw_manager.draw_page_chart(self.hourly_stats)
+        
         # Creamos el diccionario de estado que necesitan las funciones de dibujo
         minutes_ago = None
         if self.last_exterior_msg_time:
@@ -382,7 +423,7 @@ class WeatherStation:
         }
 
         if self.current_page == 0:
-            self.hw_manager.draw_page_main(self.data_store, self.temp_history_ext, status_info, self.active_alert, self.blink_state)
+           self.hw_manager.draw_page_main(self.data_store, self.temp_history_ext, status_info, self.active_alert, self.active_alert_change, self.blink_state)
         elif self.current_page == 1:
             # La página de estadísticas sigue funcionando como antes
             self.hw_manager.draw_page_stats(self.stats_data, self.data_store["interior"])
@@ -413,7 +454,8 @@ class WeatherStation:
                         time.sleep(0.3)
                     
                     logger.info(f"Toque detectado. Cambiando a página {1 - self.current_page}")
-                    self.current_page = 1 - self.current_page
+                    #self.current_page = 1 - self.current_page
+                    self.current_page = (self.current_page + 1) % self.total_pages
                     self.task_draw_display()
                     self.last_button_press_time = now
                     
@@ -447,10 +489,11 @@ class WeatherStation:
                     
                     
 
-                if self.is_backlight_on and (now - self.last_activity_time > TFT_BACKLIGHT_TIMEOUT_SECONDS):
-                    logger.info("Inactividad detectada. Apagando luz de fondo de la pantalla.")
-                    self.hw_manager.set_backlight(False)
-                    self.is_backlight_on = False
+                if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
+                    self.last_activity_time = now # <-- Registra actividad
+                    if not self.is_backlight_on:
+                        self.hw_manager.set_backlight(True) # <-- Re-enciende
+                        self.is_backlight_on = True
                                 
                 
                 if now - last_local_read >= LOCAL_SENSOR_READ_RATE_SECONDS:

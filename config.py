@@ -79,9 +79,7 @@ MAIN_LOOP_SLEEP_SECONDS = 0.2 # Tiempo de refresco del bucle principal (para par
 
 # --- Configuración de Interfaz de Usuario ---
 TFT_BACKLIGHT_TIMEOUT_SECONDS = 300 # 300 segundos = 5 minutos
-NIGHT_MODE_ENABLED = True
-NIGHT_MODE_START_HOUR = 22 # Empieza a las 22:00 (10 PM)
-NIGHT_MODE_END_HOUR = 7    # Termina a las 07:00 (7 AM)
+
 
 # ---------------------------------------------------
 UI_COLORS = {

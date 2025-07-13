@@ -114,15 +114,15 @@ class HardwareManager:
     
     def is_button_pressed(self):
         return GPIO.input(PIN_PAGE_BUTTON) == GPIO.HIGH
+#-------------------------------------------------------------------------
 
     def set_backlight(self, status):
         if self.tft_device:
             GPIO.output(PIN_TFT_LED, GPIO.HIGH if status else GPIO.LOW)
+            
 #---------------------------------------------------------------------
     def draw_temp_chart(self, history, status_info, width, height):
-        """
-        Dibuja la tarjeta completa del gráfico, incluyendo título, estado y la línea de datos.
-        """
+        
         # 1. Crear el lienzo para el gráfico
         chart_canvas = Image.new("RGBA", (width, height))
         draw = ImageDraw.Draw(chart_canvas)
@@ -137,16 +137,22 @@ class HardwareManager:
         status_text = "OFFLINE"
         status_color = UI_COLORS['danger'] # Rojo por defecto
 
-        if status_info.get("exterior_online"):
-            minutes_ago = status_info.get("minutes_ago", 0)
+        # Obtenemos los valores de forma segura, sin valores por defecto
+        is_online = status_info.get("exterior_online")
+        minutes_ago = status_info.get("minutes_ago")
+
+        # Solo entramos en la lógica si el sensor está online Y tenemos un valor de tiempo
+        if is_online and minutes_ago is not None:
             if minutes_ago < EXTERIOR_TIMEOUT_WARN1:
                 status_text = "ONLINE"
                 status_color = UI_COLORS['success'] # Verde
+            # La comprobación de TIMEOUT ya está implícita en la lógica de LEDs, aquí solo necesitamos ONLINE
+            # Si han pasado más de 5 min pero menos de 15, is_online seguirá siendo True
             else:
                 status_text = "TIMEOUT"
                 status_color = UI_COLORS['warning'] # Naranja/Amarillo
-        
-        # Usamos align="right" para que quede bien alineado al borde derecho
+
+        # Dibujamos el estado determinado
         text_width = self.font_medium.getlength(status_text)
         self._draw_text(draw, status_text, self.font_medium, status_color, (width - text_width - 10, 5))
 
@@ -207,7 +213,7 @@ class HardwareManager:
 
 #--------------------------------------------------------------------
 
-    def draw_page_main(self, data_store, temp_history, status_info, active_alert, blink_state):
+    def draw_page_main(self, data_store, temp_history, status_info, active_alert, active_alert_change, blink_state):
         """Dibuja el dashboard principal con el layout final corregido."""
         if not self.tft_device: return
         from luma.core.render import canvas
@@ -260,26 +266,22 @@ class HardwareManager:
             self._draw_text(draw, dew_ext_str, self.font_small, "lightgrey", (rect4[0] + 15, rect4[1] + 70))
         
         # --- DIBUJAR ICONO DE ALERTA (SI HAY) ---
-            alert_icon_to_draw = None
-            if active_alert and blink_state: 
-                icon_name = "helada" if active_alert == "HELADA" else "calor_extremo"
-            
-                alert_icon = self.icons.get(icon_name)
-            if alert_icon:
-                # Lo dibujamos en la esquina inferior derecha
-                alert_canvas = Image.new("RGBA", self.tft_device.size)
-                # La posición aquí es relativa al lienzo de la pantalla
-                alert_canvas.paste(alert_icon, (280, 200), alert_icon) 
-                draw.bitmap((0, 0), alert_canvas, fill=None)
-                
-            # La nueva alerta de cambio brusco tiene prioridad
+            alert_icon_to_draw = None # Inicializamos la variable a None
+
+            # Primero, comprobamos la alerta de cambio brusco, que tiene prioridad
             if active_alert_change and blink_state:
                 alert_icon_to_draw = self.icons.get("cambio_temp")
+            # Si no hay alerta de cambio, comprobamos las de clima
+            elif active_alert and blink_state:
+                icon_name = "helada" if active_alert == "HELADA" else "calor_extremo"
+                alert_icon_to_draw = self.icons.get(icon_name)
 
+            # Ahora, si hemos seleccionado un icono para dibujar, lo dibujamos
+            # La comprobación usa el nombre de variable correcto: alert_icon_to_draw
             if alert_icon_to_draw:
-                # Lo dibujamos en la esquina inferior derecha
                 alert_canvas = Image.new("RGBA", self.tft_device.size)
-                alert_canvas.paste(alert_icon_to_draw, (280, 200), alert_icon_to_draw)
+                # La posición del icono, puedes ajustarla
+                alert_canvas.paste(alert_icon_to_draw, (280, 195), alert_icon_to_draw)
                 draw.bitmap((0, 0), alert_canvas, fill=None)
                     # ---------------------------------------------
                 
@@ -382,7 +384,61 @@ class HardwareManager:
             uptime_val = system_data['uptime'] if system_data['uptime'] is not None else "---"
             self._draw_text(draw, uptime_val, self.font_small, "lightgrey", (card_x2 + 15, card_y1 + 155))
 
+#---------------------------------------------------------------------
+   
+    # Reemplaza draw_page_chart
 
+    def draw_page_chart(self, hourly_stats):
+        """Página 3: Dibuja un gráfico de barras del historial 24h más informativo."""
+        if not self.tft_device: return
+        from luma.core.render import canvas
+        with canvas(self.tft_device) as draw:
+            draw.rectangle(self.tft_device.bounding_box, fill="black")
+            self._draw_text(draw, "Historial 24h (3/3)", self.font_medium, "white", (160, 15), align="center")
+            draw.line((10, 35, 310, 35), fill="violet")
+
+            all_temps = [s[0] for s in hourly_stats if s[0] is not None] + [s[1] for s in hourly_stats if s[1] is not None]
+            if not all_temps:
+                self._draw_text(draw, "Recopilando datos...", self.font_small, "grey", (160, 120), align="center")
+                return
+
+            min_day, max_day = min(all_temps), max(all_temps)
+            temp_range = max_day - min_day if max_day != min_day else 1.0
+            
+            bar_width = 310 / 24
+            chart_area_h = 160
+            chart_y_base = 215
+
+            # --- DIBUJAR BARRAS Y ETIQUETAS ---
+            for i, stats in enumerate(hourly_stats):
+                x = 10 + (i * bar_width)
+                
+                # Dibujar etiqueta de la hora (cada 4 horas)
+                if i % 4 == 0:
+                    self._draw_text(draw, f"{i:02d}h", self.font_small, "grey", (x + bar_width/2, chart_y_base + 5), align="center")
+
+                if stats[0] is not None: # Si hay datos para esa hora
+                    min_h = ((stats[0] - min_day) / temp_range) * chart_area_h
+                    max_h = ((stats[1] - min_day) / temp_range) * chart_area_h
+                    
+                    # Dibujar barra de rango (min a max)
+                    draw.rectangle(
+                        (x + 2, chart_y_base - max_h, x + bar_width - 2, chart_y_base - min_h),
+                        fill=UI_COLORS['primary'] + (80,) # Cian semitransparente
+                    )
+
+                    # Si tenemos datos de promedio, dibujar una línea
+                    if stats[3] > 0:
+                        avg_temp = stats[2] / stats[3]
+                        avg_h = ((avg_temp - min_day) / temp_range) * chart_area_h
+                        draw.line(
+                            (x + 2, chart_y_base - avg_h, x + bar_width - 2, chart_y_base - avg_h),
+                            fill="orange"
+                        )
+            
+            # --- DIBUJAR ETIQUETAS DE EJE Y ---
+            self._draw_text(draw, f"{max_day:.0f}°", self.font_small, "white", (10, 40))
+            self._draw_text(draw, f"{min_day:.0f}°", self.font_small, "white", (10, 200))
 
 # -------------------------------------------------------------------
     
