@@ -52,6 +52,13 @@ class WeatherStation:
         self.temp_change_history = deque(maxlen=10) # Historial para los últimos ~10 minutos
         self.active_alert_change = False
         
+        self.blink_counter = 0
+        # Definimos los estados de parpadeo
+        self.blink_fast = False # 3 Hz
+        self.blink_medium = False # 2 Hz
+        self.blink_slow = False # 1 Hz
+        self.pulse_slow = False # 0.5 Hz
+        
         # Variables de estado
         self.last_exterior_msg_time = None
         self.mqtt_local_connected = False
@@ -223,7 +230,7 @@ class WeatherStation:
             sensor_type = topic_parts[-1]
             payload = msg.payload.decode('utf-8')
             self.last_exterior_msg_time = datetime.now()
-            self.last_activity_time = time.time()
+            #self.last_activity_time = time.time()
 
             if sensor_type == "estado":
                 self.data_store["exterior"]["estado"] = payload; return
@@ -329,43 +336,45 @@ class WeatherStation:
         # --- LÓGICA DEL LED 0 - ESTADO DEL SISTEMA ---
         if self.last_exterior_msg_time:
             minutes_since_last_msg = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
+            
             if minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN1:
-                system_color = COLOR_SYS_OK # Verde
+                # Sistema OK, pulso suave verde
+                system_color = COLOR_SYS_OK if self.pulse_slow else (0, 80, 0) # Verde oscuro para el pulso
             elif minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN2:
-                system_color = COLOR_SYS_WARN1 # Amarillo
+                # Datos antiguos, amarillo parpadeo lento
+                system_color = COLOR_SYS_WARN1 if self.blink_slow else COLOR_OFF
             elif minutes_since_last_msg < EXTERIOR_TIMEOUT_OFFLINE:
-                system_color = COLOR_SYS_WARN2 # Naranja
+                # Datos muy antiguos, naranja parpadeo medio
+                system_color = COLOR_SYS_WARN2 if self.blink_medium else COLOR_OFF
             else:
-                system_color = COLOR_SYS_OFFLINE # Rojo
+                # Offline, rojo parpadeo rápido (alerta crítica)
+                system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
         else:
-            # Si nunca hemos recibido un mensaje, está offline
-            system_color = COLOR_SYS_OFFLINE # Rojo
+            # Nunca se ha conectado, rojo parpadeo rápido
+            system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
 
         # --- LÓGICA DEL LED 1 - ESTADO CLIMÁTICO ---
         temp_ext = self.data_store["exterior"]["temperatura"]
         
         if temp_ext is not None:
             if temp_ext < UMBRAL_HELADA_EXTREMA_C:
-                # Violeta parpadeante
-                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_state else COLOR_OFF
+                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_fast else COLOR_OFF # Parpadeo rápido
             elif temp_ext < UMBRAL_HELADA_C:
-                # Azul parpadeante
-                environment_color = COLOR_ENV_FROST if self.blink_state else COLOR_OFF
+                environment_color = COLOR_ENV_FROST if self.blink_medium else COLOR_OFF # Parpadeo medio
             elif temp_ext < UMBRAL_MUY_FRIO_C:
-                environment_color = COLOR_ENV_VERY_COLD # Azul sólido
+                environment_color = COLOR_ENV_VERY_COLD # Sólido
             elif temp_ext < UMBRAL_FRIO_C:
-                environment_color = COLOR_ENV_COLD # Cian sólido
+                environment_color = COLOR_ENV_COLD # Sólido
             elif temp_ext < UMBRAL_FRESCO_C:
-                environment_color = COLOR_ENV_COOL # Verde claro
+                environment_color = COLOR_ENV_COOL # Sólido
             elif temp_ext < UMBRAL_OPTIMO_C:
-                environment_color = COLOR_ENV_NICE # Verde sólido
+                environment_color = COLOR_ENV_NICE # Sólido
             elif temp_ext < UMBRAL_CALIDO_C:
-                environment_color = COLOR_ENV_WARM # Amarillo sólido
+                environment_color = COLOR_ENV_WARM # Sólido
             elif temp_ext < UMBRAL_CALUROSO_C:
-                environment_color = COLOR_ENV_HOT # Naranja sólido
-            else: # Mayor o igual a UMBRAL_CALUROSO_C (35°C)
-                # Rojo parpadeante
-                environment_color = COLOR_ENV_EXTREME if self.blink_state else COLOR_OFF
+                environment_color = COLOR_ENV_HOT # Sólido
+            else: # Calor extremo
+                environment_color = COLOR_ENV_EXTREME if self.blink_medium else COLOR_OFF # Parpadeo medio
 
         # --- LÓGICA DE ALERTAS PARA LA PANTALLA ---
         previous_alert = self.active_alert
@@ -437,10 +446,24 @@ class WeatherStation:
         last_local_read = 0
         last_display_draw = 0
         last_blink_toggle = 0
-
+#-----------------------------------------------------  
+        
+#-------------------------------------------------------- 
         try:
             while True:
                 now = time.time()
+#-----------------------------------------------------  
+                self.blink_counter = (self.blink_counter + 1) % 120 # Se resetea cada 120 ciclos
+
+                if self.blink_counter % 4 == 0:  # ~5 Hz (muy rápido) -> 3 Hz real
+                    self.blink_fast = not self.blink_fast
+                if self.blink_counter % 6 == 0:  # ~3.3 Hz -> 2 Hz real
+                    self.blink_medium = not self.blink_medium
+                if self.blink_counter % 10 == 0: # ~2 Hz -> 1 Hz real
+                    self.blink_slow = not self.blink_slow
+                if self.blink_counter % 20 == 0: # ~1 Hz -> 0.5 Hz real (pulso)
+                    self.pulse_slow = not self.pulse_slow
+#--------------------------------------------------------         
                 
                 if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
                     
@@ -449,8 +472,7 @@ class WeatherStation:
                         self.hw_manager.set_backlight(True)
                         self.is_backlight_on = True
                         logger.info("Botón presionado. Encendiendo pantalla.")
-                        # Hacemos una pausa para que el usuario vea que la pantalla se ha encendido
-                        # antes de procesar el cambio de página.
+                        
                         time.sleep(0.3)
                     
                     logger.info(f"Toque detectado. Cambiando a página {1 - self.current_page}")
@@ -463,31 +485,25 @@ class WeatherStation:
                     current_hour = datetime.now().hour
                     
                     # Comprobar si estamos en horario nocturno
-                    is_night = False
-                    if NIGHT_MODE_ENABLED:
-                        if NIGHT_MODE_START_HOUR > NIGHT_MODE_END_HOUR: # Caso nocturno que cruza la medianoche (ej. 22:00 a 07:00)
-                            if current_hour >= NIGHT_MODE_START_HOUR or current_hour < NIGHT_MODE_END_HOUR:
-                                is_night = True
-                        else: # Caso diurno (ej. 09:00 a 18:00)
-                            if NIGHT_MODE_START_HOUR <= current_hour < NIGHT_MODE_END_HOUR:
-                                is_night = True
+                    #is_night = False
+                    #if NIGHT_MODE_ENABLED:
+                    #    if NIGHT_MODE_START_HOUR > NIGHT_MODE_END_HOUR: # Caso nocturno que cruza la medianoche (ej. 22:00 a 07:00)
+                    #        if current_hour >= NIGHT_MODE_START_HOUR or current_hour < NIGHT_MODE_END_HOUR:
+                   #            is_night = True
+                    #    else: # Caso diurno (ej. 09:00 a 18:00)
+                    #        if NIGHT_MODE_START_HOUR <= current_hour < NIGHT_MODE_END_HOUR:
+                    #            is_night = True
                     
-                    # Decidir si la pantalla debe estar encendida
-                    # Condición 1: El backlight ya está encendido y no ha pasado el timeout de inactividad
+                    
                     should_be_on = self.is_backlight_on and (now - self.last_activity_time < TFT_BACKLIGHT_TIMEOUT_SECONDS)
                     
-                    # Condición 2: Si es de día, forzamos que esté encendida (ignorando el timeout)
-                    #if not is_night:
-                    #    should_be_on = True
-
-                    # Aplicar el cambio de estado si es necesario
+                    
                     if self.is_backlight_on != should_be_on:
                         logger.info(f"Cambiando estado del backlight a: {'ON' if should_be_on else 'OFF'}")
                         self.hw_manager.set_backlight(should_be_on)
                         self.is_backlight_on = should_be_on
     # --------------------------------------------------------- 
-                    
-                    
+                            
 
                 if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
                     self.last_activity_time = now # <-- Registra actividad
