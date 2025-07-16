@@ -447,11 +447,16 @@ class WeatherStation:
         last_display_draw = 0
         last_blink_toggle = 0
 #-----------------------------------------------------  
-        
+        self.last_activity_time = time.time()
+        self.is_backlight_on = True
 #-------------------------------------------------------- 
         try:
             while True:
                 now = time.time()
+                if self.is_backlight_on and (now - self.last_activity_time > TFT_BACKLIGHT_TIMEOUT_SECONDS):
+                    logger.info("Inactividad: Apagando pantalla.")
+                    self.hw_manager.set_backlight(False)
+                    self.is_backlight_on = False
 #-----------------------------------------------------  
                 self.blink_counter = (self.blink_counter + 1) % 120 # Se resetea cada 120 ciclos
 
@@ -466,35 +471,23 @@ class WeatherStation:
 #--------------------------------------------------------         
                 
                 if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
+                    self.last_activity_time = now # <-- Registra actividad
                     
-                    self.last_activity_time = now # Actualizamos el tiempo de la última actividad
                     if not self.is_backlight_on:
+                        logger.info("Actividad: Encendiendo pantalla.")
                         self.hw_manager.set_backlight(True)
                         self.is_backlight_on = True
-                        logger.info("Botón presionado. Encendiendo pantalla.")
-                        
-                        time.sleep(0.3)
+                    else:
+                        self.current_page = (self.current_page + 1) % self.total_pages
                     
-                    logger.info(f"Toque detectado. Cambiando a página {1 - self.current_page}")
-                    #self.current_page = 1 - self.current_page
-                    self.current_page = (self.current_page + 1) % self.total_pages
+                    logger.info(f"Página actual: {self.current_page}")
                     self.task_draw_display()
                     self.last_button_press_time = now
                     
                     # --- LÓGICA DE GESTIÓN DE LA PANTALLA (MODIFICADA) ---
                     current_hour = datetime.now().hour
                     
-                    # Comprobar si estamos en horario nocturno
-                    #is_night = False
-                    #if NIGHT_MODE_ENABLED:
-                    #    if NIGHT_MODE_START_HOUR > NIGHT_MODE_END_HOUR: # Caso nocturno que cruza la medianoche (ej. 22:00 a 07:00)
-                    #        if current_hour >= NIGHT_MODE_START_HOUR or current_hour < NIGHT_MODE_END_HOUR:
-                   #            is_night = True
-                    #    else: # Caso diurno (ej. 09:00 a 18:00)
-                    #        if NIGHT_MODE_START_HOUR <= current_hour < NIGHT_MODE_END_HOUR:
-                    #            is_night = True
-                    
-                    
+                                       
                     should_be_on = self.is_backlight_on and (now - self.last_activity_time < TFT_BACKLIGHT_TIMEOUT_SECONDS)
                     
                     
@@ -504,13 +497,7 @@ class WeatherStation:
                         self.is_backlight_on = should_be_on
     # --------------------------------------------------------- 
                             
-
-                if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
-                    self.last_activity_time = now # <-- Registra actividad
-                    if not self.is_backlight_on:
-                        self.hw_manager.set_backlight(True) # <-- Re-enciende
-                        self.is_backlight_on = True
-                                
+                                                
                 
                 if now - last_local_read >= LOCAL_SENSOR_READ_RATE_SECONDS:
                     self.task_read_local_sensor()
@@ -522,9 +509,11 @@ class WeatherStation:
                 self.task_update_leds_and_alerts()
 
                 if now - last_display_draw >= CONSOLE_REFRESH_RATE_SECONDS:
-                    self.task_draw_display()
+                    # Añade esta comprobación
+                    if self.is_backlight_on:
+                        self.task_draw_display()
                     last_display_draw = now
-                
+                                
                 self.check_and_reset_stats()
                 time.sleep(MAIN_LOOP_SLEEP_SECONDS)
 

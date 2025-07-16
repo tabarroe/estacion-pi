@@ -478,7 +478,12 @@ class HardwareManager:
                 self.pixels.show()
             except Exception as e:
                 logging.error(f"Error al actualizar los NeoPixels: {e}")
-    
+                
+    def set_backlight(self, status: bool):
+        """Enciende (True) o apaga (False) la retroiluminación."""
+        if self.tft_device:
+            GPIO.output(PIN_TFT_LED, GPIO.HIGH if status else GPIO.LOW)
+            
     def cleanup(self):
         logging.info("Limpiando hardware...")
         if self.pixels:
