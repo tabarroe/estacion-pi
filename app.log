@@ -1,0 +1,14 @@
+2025-07-12 14:26:40 - root - INFO - --- Iniciando Estación Meteorológica v4.1 ---
+2025-07-12 14:26:40 - hardware_manager - INFO - Cargando iconos...
+2025-07-12 14:26:40 - hardware_manager - INFO - Fuentes DejaVu cargadas correctamente.
+Can't open /dev/mem: Permission denied
+2025-07-12 14:26:40 - root - ERROR - ERROR al inicializar NeoPixels: NeoPixel support requires running with sudo, please try again!
+2025-07-12 14:26:41 - root - INFO - Sensor BME280 inicializado.
+2025-07-12 14:26:41 - hardware_manager - INFO - Botón configurado en pin GPIO 6.
+2025-07-12 14:26:41 - hardware_manager - INFO - Hardware Manager completamente inicializado.
+2025-07-12 14:26:41 - root - INFO - Conectando al broker MQTT local en 127.0.0.1...
+2025-07-12 14:26:41 - root - INFO - Conectando al gateway de ThingsBoard en thingsboard.cloud...
+2025-07-12 14:26:41 - root - INFO - Conexión exitosa al Broker MQTT local.
+2025-07-12 14:26:41 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-07-12 14:26:41 - root - INFO - Conexión exitosa a ThingsBoard.
+2025-07-12 14:26:41 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.

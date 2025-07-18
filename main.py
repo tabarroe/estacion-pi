@@ -32,7 +32,8 @@ class WeatherStation:
                 "temperatura": None, "humedad": None, "presion": None, 
                 "estado": "Desconocido", "presion_tendencia": "---",
                 "indice_calor": None, "temp_trend": "→",
-                "dew_point": None, "temp_sum": 0.0, "reading_count": 0
+                "dew_point": None, "temp_sum": 0.0, "reading_count": 0,
+                "voltaje": None, "corriente": None, "corriente_media": None
             },
         }
 #---------------------------------------------------------------------
@@ -51,6 +52,8 @@ class WeatherStation:
         # Guardaremos tuplas de (timestamp, temperatura)
         self.temp_change_history = deque(maxlen=10) # Historial para los últimos ~10 minutos
         self.active_alert_change = False
+        self.active_alert_bateria = False
+        self.current_history = deque(maxlen=30)
         
         self.blink_counter = 0
         # Definimos los estados de parpadeo
@@ -217,6 +220,8 @@ class WeatherStation:
             self.mqtt_local_connected = True
         else:
             logger.error(f"Fallo al conectar al MQTT local, código: {reason_code}")
+            
+ #---------------------------------------------------------------------          
 
     def on_mqtt_local_disconnect(self, client, userdata, *args):
         logger.warning(f"Desconectado del Broker MQTT local.")
@@ -263,6 +268,22 @@ class WeatherStation:
                 elif sensor_type == "presion":
                     self.pressure_history.append(value)
                     self.calculate_pressure_trend()
+                
+                elif sensor_type == "corriente":
+                    self.current_history.append(value)
+                    if self.current_history:
+                        avg_current = sum(self.current_history) / len(self.current_history)
+                        self.data_store["exterior"]["corriente_media"] = round(avg_current, 1)
+                
+                elif sensor_type == "voltaje":
+                    # Guardamos el valor que llegó en el mensaje
+                    self.data_store["exterior"]["voltaje"] = value 
+                    # Comprobamos si el voltaje es bajo
+                    if value < BATERIA_BAJA_VOLTAJE:
+                        logger.warning(f"¡ALERTA DE BATERÍA BAJA! Voltaje: {value:.2f}V")
+                        self.active_alert_bateria = True
+                    else:
+                        self.active_alert_bateria = False    
         except Exception as e:
             logger.error(f"Error procesando mensaje MQTT: {e}", exc_info=True)
 #------------------------------------------------------------------------
@@ -329,114 +350,122 @@ class WeatherStation:
         self.forward_to_thingsboard("Estacion Interior", telemetry_to_forward)
  #---------------------------------------------------
  
+#---------------------------------------------------------------------
+# TU FUNCIÓN CORREGIDA Y ORDENADA
+#---------------------------------------------------------------------
     def task_update_leds_and_alerts(self):
         system_color = COLOR_OFF
         environment_color = COLOR_GRIS # Por defecto, gris si no hay datos
         
         # --- LÓGICA DEL LED 0 - ESTADO DEL SISTEMA ---
-        if self.last_exterior_msg_time:
-            minutes_since_last_msg = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
-            
-            if minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN1:
-                # Sistema OK, pulso suave verde
-                system_color = COLOR_SYS_OK if self.pulse_slow else (0, 80, 0) # Verde oscuro para el pulso
-            elif minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN2:
-                # Datos antiguos, amarillo parpadeo lento
-                system_color = COLOR_SYS_WARN1 if self.blink_slow else COLOR_OFF
-            elif minutes_since_last_msg < EXTERIOR_TIMEOUT_OFFLINE:
-                # Datos muy antiguos, naranja parpadeo medio
-                system_color = COLOR_SYS_WARN2 if self.blink_medium else COLOR_OFF
-            else:
-                # Offline, rojo parpadeo rápido (alerta crítica)
-                system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
+        
+        # 1. La alerta de batería tiene la máxima prioridad
+        if self.active_alert_bateria:
+            # Usamos un color distintivo y un parpadeo para la alerta crítica de batería
+            system_color = COLOR_ENV_FROST_EXTREME if self.blink_medium else COLOR_OFF
         else:
-            # Nunca se ha conectado, rojo parpadeo rápido
-            system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
+            # 2. Si no hay alerta de batería, aplicamos la lógica normal de conexión
+            if self.last_exterior_msg_time:
+                minutes_since_last_msg = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
+                
+                if minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN1:
+                    # Sistema OK, pulso suave verde
+                    system_color = COLOR_SYS_OK if self.pulse_slow else (0, 80, 0)
+                elif minutes_since_last_msg < EXTERIOR_TIMEOUT_WARN2:
+                    # Datos antiguos, amarillo parpadeo lento
+                    system_color = COLOR_SYS_WARN1 if self.blink_slow else COLOR_OFF
+                elif minutes_since_last_msg < EXTERIOR_TIMEOUT_OFFLINE:
+                    # Datos muy antiguos, naranja parpadeo medio
+                    system_color = COLOR_SYS_WARN2 if self.blink_medium else COLOR_OFF
+                else:
+                    # Offline, rojo parpadeo rápido (alerta crítica)
+                    system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
+            else:
+                # Nunca se ha conectado, rojo parpadeo rápido
+                system_color = COLOR_SYS_OFFLINE if self.blink_fast else COLOR_OFF
 
         # --- LÓGICA DEL LED 1 - ESTADO CLIMÁTICO ---
+        previous_alert = self.active_alert
+        self.active_alert = None
         temp_ext = self.data_store["exterior"]["temperatura"]
         
         if temp_ext is not None:
             if temp_ext < UMBRAL_HELADA_EXTREMA_C:
-                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_fast else COLOR_OFF # Parpadeo rápido
+                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_fast else COLOR_OFF
+                self.active_alert = "HELADA_EXTREMA"
             elif temp_ext < UMBRAL_HELADA_C:
-                environment_color = COLOR_ENV_FROST if self.blink_medium else COLOR_OFF # Parpadeo medio
-            elif temp_ext < UMBRAL_MUY_FRIO_C:
-                environment_color = COLOR_ENV_VERY_COLD # Sólido
-            elif temp_ext < UMBRAL_FRIO_C:
-                environment_color = COLOR_ENV_COLD # Sólido
-            elif temp_ext < UMBRAL_FRESCO_C:
-                environment_color = COLOR_ENV_COOL # Sólido
-            elif temp_ext < UMBRAL_OPTIMO_C:
-                environment_color = COLOR_ENV_NICE # Sólido
-            elif temp_ext < UMBRAL_CALIDO_C:
-                environment_color = COLOR_ENV_WARM # Sólido
-            elif temp_ext < UMBRAL_CALUROSO_C:
-                environment_color = COLOR_ENV_HOT # Sólido
-            else: # Calor extremo
-                environment_color = COLOR_ENV_EXTREME if self.blink_medium else COLOR_OFF # Parpadeo medio
-
+                environment_color = COLOR_ENV_FROST if self.blink_medium else COLOR_OFF
+                self.active_alert = "HELADA"
+            elif temp_ext >= UMBRAL_CALOR_EXTREMO_C:
+                environment_color = COLOR_ENV_EXTREME if self.blink_fast else COLOR_OFF
+                self.active_alert = "PELIGRO_CALOR"
+            elif temp_ext >= UMBRAL_CALUROSO_C:
+                environment_color = COLOR_ENV_HOT if self.blink_medium else COLOR_OFF
+                self.active_alert = "CALOR_EXTREMO"
+            elif temp_ext > UMBRAL_CALIDO_C:
+                environment_color = COLOR_ENV_WARM
+            elif temp_ext > UMBRAL_OPTIMO_C:
+                environment_color = COLOR_ENV_NICE
+            elif temp_ext > UMBRAL_FRESCO_C:
+                environment_color = COLOR_ENV_COOL
+            elif temp_ext > UMBRAL_MUY_FRIO_C:
+                environment_color = COLOR_ENV_VERY_COLD
+            else:
+                environment_color = COLOR_ENV_COLD
+                
         # --- LÓGICA DE ALERTAS PARA LA PANTALLA ---
-        previous_alert = self.active_alert
-        self.active_alert = None
-        if temp_ext is not None:
-            if temp_ext < UMBRAL_HELADA_C: self.active_alert = "HELADA"
-            elif temp_ext >= UMBRAL_CALOR_EXTREMO_C: self.active_alert = "CALOR_EXTREMO"
-        
         if self.active_alert != previous_alert:
             logger.info(f"¡Cambio de estado de alerta! Nueva alerta: {self.active_alert}. Forzando redibujado.")
             self.task_draw_display()
         
         # --- ACTUALIZACIÓN FINAL DE LOS LEDS ---
         self.hw_manager.update_leds(system_color, environment_color)
+#---------------------------------------------------------------------
 #-------------------------------------------------------------------------
     
+    #---------------------------------------------------------------------
+# ESTA ES LA ÚNICA Y CORRECTA VERSIÓN DE LA FUNCIÓN
+#---------------------------------------------------------------------
     def task_draw_display(self):
         """Decide qué página dibujar en la TFT."""
-        if not self.is_backlight_on: return
+        # Si la pantalla está apagada, no hacemos nada para ahorrar CPU.
+        if not self.is_backlight_on:
+            return
+
+        # 1. Preparamos el diccionario de 'status_info' una sola vez.
+        #    Este diccionario se pasará a las funciones de dibujo que lo necesiten.
         minutes_ago = None
         if self.last_exterior_msg_time:
             minutes_ago = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
-        is_online = minutes_ago is not None and minutes_ago < EXTERIOR_TIMEOUT_OFFLINE
 
+        is_online = minutes_ago is not None and minutes_ago < EXTERIOR_TIMEOUT_OFFLINE
+        
         status_info = {
             "exterior_online": is_online,
             "minutes_ago": minutes_ago
         }
-        # --- LÓGICA DE DIBUJO CON 3 PÁGINAS ---
+
+        # 2. Decidimos qué página dibujar basándonos en self.current_page.
         if self.current_page == 0:
-            # Le pasamos todos los argumentos que necesita
+            # Dibuja la página principal del dashboard
             self.hw_manager.draw_page_main(
                 self.data_store, 
                 self.temp_history_ext, 
                 status_info, 
                 self.active_alert, 
-                self.active_alert_change, 
-                self.blink_state
-                )
+                self.active_alert_change,
+                self.active_alert_bateria,
+                self.blink_fast # Usamos el parpadeo rápido para las alertas en pantalla
+            )
         elif self.current_page == 1:
-            # La página de estadísticas sigue funcionando como antes
+            # Dibuja la página de estadísticas del sistema
             self.hw_manager.draw_page_stats(self.stats_data, self.data_store["interior"])
         elif self.current_page == 2:
-            # La página del gráfico de barras
+            # Dibuja la página con el gráfico de barras del historial
             self.hw_manager.draw_page_chart(self.hourly_stats)
-        
-        # Creamos el diccionario de estado que necesitan las funciones de dibujo
-        minutes_ago = None
-        if self.last_exterior_msg_time:
-            minutes_ago = (datetime.now() - self.last_exterior_msg_time).total_seconds() / 60
+#---------------------------------------------------------------------
 
-        status_info = {
-            "exterior_online": minutes_ago is not None and minutes_ago < EXTERIOR_TIMEOUT_OFFLINE,
-            "minutes_ago": minutes_ago
-        }
-
-        if self.current_page == 0:
-           self.hw_manager.draw_page_main(self.data_store, self.temp_history_ext, status_info, self.active_alert, self.active_alert_change, self.blink_state)
-        elif self.current_page == 1:
-            # La página de estadísticas sigue funcionando como antes
-            self.hw_manager.draw_page_stats(self.stats_data, self.data_store["interior"])
-#-------------------------------------------------------------------------------
+            #-------------------------------------------------------------------------------
 
     # --- Bucle Principal ---
     def run(self):

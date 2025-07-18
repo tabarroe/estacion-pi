@@ -220,8 +220,8 @@ class HardwareManager:
 
 #--------------------------------------------------------------------
 
-    def draw_page_main(self, data_store, temp_history, status_info, active_alert, active_alert_change, blink_state):
-        """Dibuja el dashboard principal con el layout final corregido."""
+    def draw_page_main(self, data_store, temp_history, status_info, active_alert, active_alert_change, active_alert_bateria, is_blinking):
+        """Dibuja el dashboard principal con el layout final y todos los datos."""
         if not self.tft_device: return
         from luma.core.render import canvas
         with canvas(self.tft_device) as draw:
@@ -241,9 +241,6 @@ class HardwareManager:
             self.draw_card(draw, rect1, "Temp. Interior", "temp", "yellow")
             t_in_str = f"{data_store['interior']['temperatura']:.1f}°C" if data_store['interior']['temperatura'] is not None else "--.-°"
             self._draw_text(draw, t_in_str, self.font_large, "white", (rect1[0] + card_w / 2, rect1[1] + 55), align="center")
-            t_in_trend = data_store['interior']['temp_trend']
-            self._draw_text(draw, t_in_trend, self.font_medium, "lightgrey", (rect1[0] + card_w - 20, rect1[1] + 8))
-            
 
             # --- Tarjeta 2: Hum. Interior ---
             rect2 = (x2, y2, x2 + card_w, y2 + card_h)
@@ -255,42 +252,66 @@ class HardwareManager:
             rect3 = (x3, y3, x3 + card_w, y3 + card_h)
             self.draw_card(draw, rect3, "Temp. Exterior", "temp", "cyan")
             t_ext_str = f"{data_store['exterior']['temperatura']:.1f}°C" if data_store['exterior']['temperatura'] is not None else "--.-°"
-            ic_str = f"(IC: {data_store['exterior']['indice_calor']:.1f}°)" if data_store['exterior']['indice_calor'] is not None else ""
-            self._draw_text(draw, t_ext_str, self.font_large, "white", (rect3[0] + card_w / 2, rect3[1] + 45), align="center")
-            self._draw_text(draw, ic_str, self.font_small, "orange", (rect3[0] + card_w / 2, rect3[1] + 70), align="center")
-            t_ext_trend = data_store['exterior']['temp_trend']
-            self._draw_text(draw, t_ext_trend, self.font_medium, "lightgrey", (rect3[0] + card_w - 20, rect3[1] + 8))
+            self._draw_text(draw, t_ext_str, self.font_large, "white", (rect3[0] + card_w / 2, rect3[1] + 55), align="center")
 
-            # --- Tarjeta 4: Datos Exterior ---
+            # --- Tarjeta 4: Datos Exterior (Humedad, Presión, Energía) ---
             rect4 = (x4, y4, x4 + card_w, y4 + card_h)
             self.draw_card(draw, rect4, "Datos Exterior", "exterior", "cyan")
-            h_ext_str = f"H: {data_store['exterior']['humedad']:.0f}%" if data_store['exterior']['humedad'] is not None else "H: --%"
-            p_ext_str = f"P: {data_store['exterior']['presion']:.0f}hPa" if data_store['exterior']['presion'] is not None else "P: ----"
-            self._draw_text(draw, h_ext_str, self.font_medium, "white", (rect4[0] + 15, rect4[1] + 35))
-            self._draw_text(draw, p_ext_str, self.font_medium, "white", (rect4[0] + 15, rect4[1] + 55))
-            dew_ext_val = data_store['exterior']['dew_point']
-            dew_ext_str = f"Rocío: {dew_ext_val:.1f}°C" if dew_ext_val is not None else ""
-            self._draw_text(draw, dew_ext_str, self.font_small, "lightgrey", (rect4[0] + 15, rect4[1] + 70))
+            
+            font_datos = self.font_medium
+            x_col1 = rect4[0] + 15
+            x_col2 = rect4[0] + 85
+            y_fila1, y_fila2 = rect4[1] + 40, rect4[1] + 65
+
+            h_ext_str = f"H: {data_store['exterior']['humedad']:.0f}%" if data_store['exterior']['humedad'] is not None else "H: --"
+            p_ext_str = f"P: {data_store['exterior']['presion']:.0f}" if data_store['exterior']['presion'] is not None else "P: --"
+            v_ext_str = f"V: {data_store['exterior']['voltaje']:.2f}" if data_store['exterior']['voltaje'] is not None else "V: --"
+            # Usamos la corriente media para un valor más estable
+            i_avg_str = f"I: {data_store['exterior']['corriente_media']:.0f}mA" if data_store['exterior']['corriente_media'] is not None else "I: --"
+            
+            self._draw_text(draw, h_ext_str, font_datos, "white", (x_col1, y_fila1))
+            self._draw_text(draw, p_ext_str, font_datos, "white", (x_col2, y_fila1))
+            self._draw_text(draw, v_ext_str, font_datos, "white", (x_col1, y_fila2))
+            self._draw_text(draw, i_avg_str, font_datos, "white", (x_col2, y_fila2))
+
+
+            # --- ÁREA INFERIOR: GRÁFICO, ROCÍO E IC ---
+            chart_y_start = gap * 3 + card_h * 2
+            
+            # 1. Dibujar Punto de Rocío e IC en la misma línea
+            dew_ext_str = f"Rocío: {data_store['exterior']['dew_point']:.1f}°" if data_store['exterior']['dew_point'] is not None else ""
+            ic_str = f"IC: {data_store['exterior']['indice_calor']:.1f}°" if data_store['exterior']['indice_calor'] is not None else ""
+            self._draw_text(draw, dew_ext_str, self.font_medium, "lightgrey", (15, chart_y_start))
+            self._draw_text(draw, ic_str, self.font_medium, "orange", (180, chart_y_start))
+            
+            # 2. Dibujar el gráfico justo debajo
+            chart_w = 320 - (gap * 2)
+            chart_h = 240 - (chart_y_start + 25) - gap
+            chart_image = self.draw_temp_chart(temp_history, status_info, chart_w, chart_h)
+            draw.bitmap((gap, chart_y_start + 25), chart_image, fill=None)
         
         # --- DIBUJAR ICONO DE ALERTA (SI HAY) ---
             alert_icon_to_draw = None # Inicializamos la variable a None
 
             # Primero, comprobamos la alerta de cambio brusco, que tiene prioridad
-            if active_alert_change and blink_state:
+            if active_alert_bateria and is_blinking:
+                alert_icon_to_draw = self.icons.get("bateria_baja")
+            # Luego, la de cambio brusco
+            elif active_alert_change and is_blinking:
                 alert_icon_to_draw = self.icons.get("cambio_temp")
-            # Si no hay alerta de cambio, comprobamos las de clima
-            elif active_alert and blink_state:
-                icon_name = "helada" if active_alert == "HELADA" else "calor_extremo"
+                
+            elif active_alert and is_blinking:
+                icon_name = "helada" if "HELADA" in active_alert else "calor_extremo"
                 alert_icon_to_draw = self.icons.get(icon_name)
 
-            # Ahora, si hemos seleccionado un icono para dibujar, lo dibujamos
-            # La comprobación usa el nombre de variable correcto: alert_icon_to_draw
             if alert_icon_to_draw:
                 alert_canvas = Image.new("RGBA", self.tft_device.size)
-                # La posición del icono, puedes ajustarla
+               
                 alert_canvas.paste(alert_icon_to_draw, (280, 195), alert_icon_to_draw)
                 draw.bitmap((0, 0), alert_canvas, fill=None)
-                    # ---------------------------------------------
+
+
+# ---------------------------------------------
                 
                 
                 

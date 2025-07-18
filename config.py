@@ -65,6 +65,7 @@ RAM_USAGE_WARN = 70.0
 RAM_USAGE_DANGER = 85.0
 WIFI_SIGNAL_WARN = 50.0
 WIFI_SIGNAL_DANGER = 30.0
+BATERIA_BAJA_VOLTAJE = 3.5
 
 # --- Gateway a la Nube (ThingsBoard) ---
 THINGSBOARD_HOST = 'thingsboard.cloud'  # O tu instancia de ThingsBoard
@@ -89,6 +90,7 @@ UI_COLORS = {
     'accent': (139, 92, 246),
     'success': (16, 185, 129), 
     'danger': (239, 68, 68),
+    'warning': (249, 115, 22),
     'text': (241, 245, 249), 
     'text_secondary': (203, 213, 225),
     'card_bg': (30, 41, 59), 
