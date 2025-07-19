@@ -16,62 +16,37 @@ from logger_config import setup_logging
 
 class WeatherStation:
     def __init__(self):
-        logger.info("--- Iniciando Estación Meteorológica v4.1 ---")
+        logger.info("--- Iniciando Estación Meteorológica vFinal ---")
         self.hw_manager = HardwareManager()
         
-        # Almacenes de datos
-#---------------------------------------------------------------------
         self.data_store = {
-            "interior": {
-                "temperatura": None, "humedad": None, "presion": None, 
-                "cpu_temp": None, "ram_usage": None, "uptime": None, 
-                "wifi_signal": None, "temp_trend": "→",
-                "dew_point": None
-            },
-            "exterior": {
-                "temperatura": None, "humedad": None, "presion": None, 
-                "estado": "Desconocido", "presion_tendencia": "---",
-                "indice_calor": None, "temp_trend": "→",
-                "dew_point": None, "temp_sum": 0.0, "reading_count": 0,
-                "voltaje": None, "corriente": None, "corriente_media": None
-            },
+            "interior": {"temperatura": None, "humedad": None, "presion": None, "cpu_temp": None, "ram_usage": None, "uptime": None, "wifi_signal": None, "temp_trend": "→", "dew_point": None},
+            "exterior": {"temperatura": None, "humedad": None, "presion": None, "estado": "Desconocido", "presion_tendencia": "---", "indice_calor": None, "temp_trend": "→", "dew_point": None, "voltaje": None, "corriente": None, "corriente_media": None},
         }
-#---------------------------------------------------------------------
-        self.stats_data = {"interior": {"temp_max": None, "temp_min": None}, "exterior": {"temp_max": None, "temp_min": None}}
-        self.last_stats_reset = time.time()
-        self.pressure_history = deque(maxlen=30)
-        self.temp_history_ext = deque(maxlen=60)
-        self.temp_history_int = deque(maxlen=30)
+        self.stats_data = {"exterior": {"temp_max": None, "temp_min": None, "temp_sum": 0.0, "reading_count": 0}}
         hourly_template = [None, None, 0.0, 0]
         self.hourly_stats = [list(hourly_template) for _ in range(24)]
-        # Almacén para tendencia de presión y temperatura
+        self.last_stats_reset = time.time()
+        
         self.pressure_history = deque(maxlen=30)
         self.temp_history_ext = deque(maxlen=60)
         self.temp_history_int = deque(maxlen=30)
-        # ---  ALARMA DE CAMBIO BRUSCO ---
-        # Guardaremos tuplas de (timestamp, temperatura)
-        self.temp_change_history = deque(maxlen=10) # Historial para los últimos ~10 minutos
-        self.active_alert_change = False
-        self.active_alert_bateria = False
+        self.temp_change_history = deque(maxlen=10)
         self.current_history = deque(maxlen=30)
-        
-        self.blink_counter = 0
-        # Definimos los estados de parpadeo
-        self.blink_fast = False # 3 Hz
-        self.blink_medium = False # 2 Hz
-        self.blink_slow = False # 1 Hz
-        self.pulse_slow = False # 0.5 Hz
-        
-        # Variables de estado
+
         self.last_exterior_msg_time = None
         self.mqtt_local_connected = False
-        self.blink_state = False
         self.current_page = 0
         self.total_pages = 3
         self.last_button_press_time = 0
+        self.active_alert = None
+        self.active_alert_change = False
+        self.active_alert_bateria = False
+        
+        self.blink_counter = 0; self.blink_fast = False; self.blink_medium = False; self.blink_slow = False; self.pulse_slow = False
+        
         self.last_activity_time = time.time()
         self.is_backlight_on = True
-        self.active_alert = None
         
         self.setup_mqtt_local()
         self.setup_mqtt_thingsboard()
@@ -471,92 +446,65 @@ class WeatherStation:
     def run(self):
         self.mqtt_local_client.loop_start()
         self.tb_client.loop_start()
+        last_local_read, last_display_draw = 0, 0
 
-        last_local_read = 0
-        last_display_draw = 0
-        last_blink_toggle = 0
-#-----------------------------------------------------  
-        self.last_activity_time = time.time()
-        self.is_backlight_on = True
-#-------------------------------------------------------- 
         try:
             while True:
                 now = time.time()
-                if self.is_backlight_on and (now - self.last_activity_time > TFT_BACKLIGHT_TIMEOUT_SECONDS):
-                    logger.info("Inactividad: Apagando pantalla.")
-                    self.hw_manager.set_backlight(False)
-                    self.is_backlight_on = False
-#-----------------------------------------------------  
-                self.blink_counter = (self.blink_counter + 1) % 120 # Se resetea cada 120 ciclos
-
-                if self.blink_counter % 4 == 0:  # ~5 Hz (muy rápido) -> 3 Hz real
-                    self.blink_fast = not self.blink_fast
-                if self.blink_counter % 6 == 0:  # ~3.3 Hz -> 2 Hz real
-                    self.blink_medium = not self.blink_medium
-                if self.blink_counter % 10 == 0: # ~2 Hz -> 1 Hz real
-                    self.blink_slow = not self.blink_slow
-                if self.blink_counter % 20 == 0: # ~1 Hz -> 0.5 Hz real (pulso)
-                    self.pulse_slow = not self.pulse_slow
-#--------------------------------------------------------         
                 
+                # Motor de parpadeo
+                self.blink_counter = (self.blink_counter + 1) % 120
+                if self.blink_counter % 4 == 0: self.blink_fast = not self.blink_fast
+                if self.blink_counter % 6 == 0: self.blink_medium = not self.blink_medium
+                if self.blink_counter % 10 == 0: self.blink_slow = not self.blink_slow
+                if self.blink_counter % 20 == 0: self.pulse_slow = not self.pulse_slow
+
+                # Lógica del botón
                 if self.hw_manager.is_button_pressed() and (now - self.last_button_press_time > 0.5):
-                    self.last_activity_time = now # <-- Registra actividad
-                    
+                    self.last_activity_time = now
                     if not self.is_backlight_on:
-                        logger.info("Actividad: Encendiendo pantalla.")
                         self.hw_manager.set_backlight(True)
                         self.is_backlight_on = True
+                        logger.info("Pantalla encendida por actividad.")
                     else:
                         self.current_page = (self.current_page + 1) % self.total_pages
+                        logger.info(f"Cambiando a página {self.current_page}")
                     
-                    logger.info(f"Página actual: {self.current_page}")
                     self.task_draw_display()
                     self.last_button_press_time = now
-                    
-                    # --- LÓGICA DE GESTIÓN DE LA PANTALLA (MODIFICADA) ---
-                    current_hour = datetime.now().hour
-                    
-                                       
-                    should_be_on = self.is_backlight_on and (now - self.last_activity_time < TFT_BACKLIGHT_TIMEOUT_SECONDS)
-                    
-                    
-                    if self.is_backlight_on != should_be_on:
-                        logger.info(f"Cambiando estado del backlight a: {'ON' if should_be_on else 'OFF'}")
-                        self.hw_manager.set_backlight(should_be_on)
-                        self.is_backlight_on = should_be_on
-    # --------------------------------------------------------- 
-                            
-                                                
-                
+
+                # Lógica de apagado por inactividad
+                time_since_activity = now - self.last_activity_time
+                if self.is_backlight_on and (time_since_activity > TFT_BACKLIGHT_TIMEOUT_SECONDS):
+                    logger.info(f"Timeout de {TFT_BACKLIGHT_TIMEOUT_SECONDS}s. Apagando pantalla.")
+                    self.hw_manager.set_backlight(False)
+                    self.is_backlight_on = False
+
+                # Tareas periódicas
                 if now - last_local_read >= LOCAL_SENSOR_READ_RATE_SECONDS:
                     self.task_read_local_sensor()
                     last_local_read = now
                 
-                if now - last_blink_toggle >= 0.5:
-                    self.blink_state = not self.blink_state
-                    last_blink_toggle = now
                 self.task_update_leds_and_alerts()
 
-                if now - last_display_draw >= CONSOLE_REFRESH_RATE_SECONDS:
-                    # Añade esta comprobación
-                    if self.is_backlight_on:
-                        self.task_draw_display()
+                if self.is_backlight_on and (now - last_display_draw >= CONSOLE_REFRESH_RATE_SECONDS):
+                    self.task_draw_display()
                     last_display_draw = now
-                                
+                
                 self.check_and_reset_stats()
                 time.sleep(MAIN_LOOP_SLEEP_SECONDS)
 
         except KeyboardInterrupt:
-            logger.info("Cerrando aplicación por interrupción de teclado...")
+            logger.info("Cerrando aplicación...")
         finally:
+            self.hw_manager.set_backlight(True)
             self.mqtt_local_client.loop_stop()
             self.tb_client.loop_stop()
             self.hw_manager.cleanup()
             logger.info("Aplicación cerrada limpiamente.")
 
-# --- INICIALIZACIÓN DEL LOGGER Y DEL PROGRAMA ---
+# --- Bloque de inicialización ---
 logger = setup_logging()
-
 if __name__ == "__main__":
     station = WeatherStation()
     station.run()

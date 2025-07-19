@@ -131,7 +131,7 @@ class HardwareManager:
         draw.rectangle((0, 0, width - 1, height - 1), outline=UI_COLORS['border'])
         
         # 3. Dibujar el título del gráfico a la izquierda
-        self._draw_text(draw, "Gráfico Temp. Exterior", self.font_medium, "white", (10, 5))
+        #self._draw_text(draw, "Gráfico Temp. Exterior", self.font_medium, "white", (10, 5))
         
         # 4. Determinar y dibujar el estado de conexión a la derecha
         status_text = "OFFLINE"
@@ -266,7 +266,6 @@ class HardwareManager:
             h_ext_str = f"H: {data_store['exterior']['humedad']:.0f}%" if data_store['exterior']['humedad'] is not None else "H: --"
             p_ext_str = f"P: {data_store['exterior']['presion']:.0f}" if data_store['exterior']['presion'] is not None else "P: --"
             v_ext_str = f"V: {data_store['exterior']['voltaje']:.2f}" if data_store['exterior']['voltaje'] is not None else "V: --"
-            # Usamos la corriente media para un valor más estable
             i_avg_str = f"I: {data_store['exterior']['corriente_media']:.0f}mA" if data_store['exterior']['corriente_media'] is not None else "I: --"
             
             self._draw_text(draw, h_ext_str, font_datos, "white", (x_col1, y_fila1))
@@ -285,10 +284,10 @@ class HardwareManager:
             self._draw_text(draw, ic_str, self.font_medium, "orange", (180, chart_y_start))
             
             # 2. Dibujar el gráfico justo debajo
-            chart_w = 320 - (gap * 2)
-            chart_h = 240 - (chart_y_start + 25) - gap
-            chart_image = self.draw_temp_chart(temp_history, status_info, chart_w, chart_h)
-            draw.bitmap((gap, chart_y_start + 25), chart_image, fill=None)
+            #chart_w = 320 - (gap * 2)
+            #chart_h = 240 - (chart_y_start + 25) - gap
+            #chart_image = self.draw_temp_chart(temp_history, status_info, chart_w, chart_h)
+            #draw.bitmap((gap, chart_y_start + 25), chart_image, fill=None)
         
         # --- DIBUJAR ICONO DE ALERTA (SI HAY) ---
             alert_icon_to_draw = None # Inicializamos la variable a None
@@ -310,10 +309,6 @@ class HardwareManager:
                 alert_canvas.paste(alert_icon_to_draw, (280, 195), alert_icon_to_draw)
                 draw.bitmap((0, 0), alert_canvas, fill=None)
 
-
-# ---------------------------------------------
-                
-                
                 
             # --- GRÁFICO ---
             chart_x = gap
@@ -374,7 +369,6 @@ class HardwareManager:
             self._draw_text(draw, t_avg_str, self.font_medium, "white", (card_x1 + 15, y_start + y_step * 2))
             self._draw_text(draw, t_var_str, self.font_medium, "violet", (card_x1 + 15, y_start + y_step * 3))
 
-            
                       
                                 # --- TARJETA DERECHA: SISTEMA PI ZERO ---
             card_x2 = 165
