@@ -266,7 +266,7 @@ class HardwareManager:
             h_ext_str = f"H: {data_store['exterior']['humedad']:.0f}%" if data_store['exterior']['humedad'] is not None else "H: --"
             p_ext_str = f"P: {data_store['exterior']['presion']:.0f}" if data_store['exterior']['presion'] is not None else "P: --"
             v_ext_str = f"V: {data_store['exterior']['voltaje']:.2f}" if data_store['exterior']['voltaje'] is not None else "V: --"
-            i_avg_str = f"I: {data_store['exterior']['corriente_media']:.0f}mA" if data_store['exterior']['corriente_media'] is not None else "I: --"
+            i_avg_str = f"I: {data_store['exterior']['corriente_media']:.0f}mA" if data_store['exterior']['corriente_media'] is not None else "I: --mA"
             
             self._draw_text(draw, h_ext_str, font_datos, "white", (x_col1, y_fila1))
             self._draw_text(draw, p_ext_str, font_datos, "white", (x_col2, y_fila1))
@@ -281,7 +281,7 @@ class HardwareManager:
             dew_ext_str = f"Rocío: {data_store['exterior']['dew_point']:.1f}°" if data_store['exterior']['dew_point'] is not None else ""
             ic_str = f"IC: {data_store['exterior']['indice_calor']:.1f}°" if data_store['exterior']['indice_calor'] is not None else ""
             self._draw_text(draw, dew_ext_str, self.font_medium, "lightgrey", (15, chart_y_start))
-            self._draw_text(draw, ic_str, self.font_medium, "orange", (180, chart_y_start))
+            self._draw_text(draw, ic_str, self.font_medium, "orange", (185, chart_y_start))
             
             # 2. Dibujar el gráfico justo debajo
             #chart_w = 320 - (gap * 2)

@@ -363,30 +363,29 @@ class WeatherStation:
         previous_alert = self.active_alert
         self.active_alert = None
         temp_ext = self.data_store["exterior"]["temperatura"]
-        
+
         if temp_ext is not None:
             if temp_ext < UMBRAL_HELADA_EXTREMA_C:
-                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_fast else COLOR_OFF
+                environment_color = COLOR_ENV_FROST_EXTREME if self.blink_fast else COLOR_OFF # Violeta, parpadeo rápido
                 self.active_alert = "HELADA_EXTREMA"
             elif temp_ext < UMBRAL_HELADA_C:
-                environment_color = COLOR_ENV_FROST if self.blink_medium else COLOR_OFF
+                environment_color = COLOR_ENV_FROST if self.blink_medium else COLOR_OFF # Azul, parpadeo medio
                 self.active_alert = "HELADA"
-            elif temp_ext >= UMBRAL_CALOR_EXTREMO_C:
-                environment_color = COLOR_ENV_EXTREME if self.blink_fast else COLOR_OFF
-                self.active_alert = "PELIGRO_CALOR"
-            elif temp_ext >= UMBRAL_CALUROSO_C:
-                environment_color = COLOR_ENV_HOT if self.blink_medium else COLOR_OFF
+            elif temp_ext < UMBRAL_MUY_FRIO_C:
+                environment_color = COLOR_ENV_VERY_COLD # Azul sólido
+            elif temp_ext < UMBRAL_FRIO_C:
+                environment_color = COLOR_ENV_COLD # Cian sólido
+            elif temp_ext < UMBRAL_FRESCO_C:
+                environment_color = COLOR_ENV_COOL # Verde claro
+            elif temp_ext < UMBRAL_OPTIMO_C:
+                environment_color = COLOR_ENV_NICE # Verde sólido
+            elif temp_ext < UMBRAL_CALIDO_C:
+                environment_color = COLOR_ENV_WARM # Amarillo sólido
+            elif temp_ext < UMBRAL_CALUROSO_C:
+                environment_color = COLOR_ENV_HOT # Naranja sólido
+            else: # Mayor o igual a UMBRAL_CALUROSO_C (35°C)
+                environment_color = COLOR_ENV_EXTREME if self.blink_medium else COLOR_OFF # Rojo, parpadeo medio
                 self.active_alert = "CALOR_EXTREMO"
-            elif temp_ext > UMBRAL_CALIDO_C:
-                environment_color = COLOR_ENV_WARM
-            elif temp_ext > UMBRAL_OPTIMO_C:
-                environment_color = COLOR_ENV_NICE
-            elif temp_ext > UMBRAL_FRESCO_C:
-                environment_color = COLOR_ENV_COOL
-            elif temp_ext > UMBRAL_MUY_FRIO_C:
-                environment_color = COLOR_ENV_VERY_COLD
-            else:
-                environment_color = COLOR_ENV_COLD
                 
         # --- LÓGICA DE ALERTAS PARA LA PANTALLA ---
         if self.active_alert != previous_alert:
