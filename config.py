@@ -67,12 +67,6 @@ WIFI_SIGNAL_WARN = 50.0
 WIFI_SIGNAL_DANGER = 30.0
 BATERIA_BAJA_VOLTAJE = 3.5
 
-# --- Gateway a la Nube (ThingsBoard) ---
-THINGSBOARD_HOST = 'thingsboard.cloud'  # O tu instancia de ThingsBoard
-
-THINGSBOARD_PORT = 1883
-THINGSBOARD_GATEWAY_TOKEN = '6ckjxmrdcedf2hh1vxir'
-
 # --- Frecuencias de Actualización ---
 CONSOLE_REFRESH_RATE_SECONDS = 10
 LOCAL_SENSOR_READ_RATE_SECONDS = 60

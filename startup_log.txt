@@ -1,458 +1,115 @@
-------------------------------------------
-Script start.sh iniciado en: mar 05 ago 2025 21:06:43 CEST
-------------------------------------------
-Paso 1: Pausa inicial de 15 segundos...
-Pausa completada.
-Paso 2: Navegando al directorio del script...
-Directorio actual: /home/pizero/estacion_meteo
-Paso 3: Exportando la variable de entorno DISPLAY...
-DISPLAY establecido a: :0
-Paso 4: Intentando lanzar main.py con el Python del sistema...
-Ruta de Python 3: /usr/bin/python3
-2025-08-11 18:41:59 - root - INFO - --- Iniciando Estación Meteorológica vFinal ---
-2025-08-11 18:41:59 - hardware_manager - INFO - Cargando iconos...
-2025-08-11 18:42:00 - hardware_manager - INFO - Fuentes DejaVu cargadas correctamente.
-2025-08-11 18:42:00 - root - INFO - NeoPixels en pin 21 inicializados.
-2025-08-11 18:42:00 - root - INFO - Sensor BME280 inicializado.
-2025-08-11 18:42:00 - hardware_manager - INFO - Botón configurado en pin GPIO 6.
-2025-08-11 18:42:00 - hardware_manager - INFO - Hardware Manager completamente inicializado.
-2025-08-11 18:42:00 - root - INFO - Conectando al broker MQTT local en 127.0.0.1...
-2025-08-11 18:42:00 - root - INFO - Conectando al gateway de ThingsBoard en thingsboard.cloud...
-2025-08-11 18:42:00 - root - INFO - Conexión exitosa al Broker MQTT local.
-2025-08-11 18:42:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 1
-2025-08-11 18:42:00 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:42:00 - root - INFO - Conexión exitosa a ThingsBoard.
-2025-08-11 18:43:00 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:43:00 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:44:00 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:44:00 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:45:00 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:45:00 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:46:00 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:46:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:47:00 - root - INFO - Timeout de 300s. Apagando pantalla.
-2025-08-11 18:47:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:47:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:48:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:48:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:49:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:49:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:50:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:50:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:51:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:51:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:52:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:52:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:53:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:53:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:54:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:54:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:55:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:55:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:56:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:56:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:57:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:57:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:58:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:58:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 18:59:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 18:59:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:00:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:00:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:01:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:01:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:02:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:02:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:03:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:03:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:04:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:04:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:05:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:05:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:06:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:06:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:07:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:07:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:07:58 - root - INFO - Pantalla encendida por actividad.
-2025-08-11 19:08:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:08:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 2
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:08:05 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 3
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:09:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:09:01 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 4
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:10:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:10:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:10:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 5
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:11:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:11:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 6
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:12:01 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:12:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:12:58 - root - INFO - Timeout de 300s. Apagando pantalla.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 7
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:13:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:13:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 8
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:14:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:14:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 9
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:15:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:15:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 10
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:16:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:16:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 11
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:17:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:17:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 12
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:18:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:18:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 13
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:19:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:19:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 14
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:20:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:20:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:20:21 - root - INFO - Pantalla encendida por actividad.
-2025-08-11 19:20:24 - root - INFO - Cambiando a página 1
-2025-08-11 19:20:25 - root - INFO - Cambiando a página 2
-2025-08-11 19:20:26 - root - INFO - Cambiando a página 0
-2025-08-11 19:20:26 - root - INFO - Cambiando a página 1
-2025-08-11 19:20:27 - root - INFO - Cambiando a página 2
-2025-08-11 19:20:27 - root - INFO - Cambiando a página 0
-2025-08-11 19:20:28 - root - INFO - Cambiando a página 1
-2025-08-11 19:20:29 - root - INFO - Cambiando a página 2
-2025-08-11 19:20:31 - root - INFO - Cambiando a página 0
-2025-08-11 19:20:42 - root - INFO - Cambiando a página 1
-2025-08-11 19:20:42 - root - INFO - Cambiando a página 2
-2025-08-11 19:20:44 - root - INFO - Cambiando a página 0
-2025-08-11 19:20:45 - root - INFO - Cambiando a página 1
-2025-08-11 19:20:45 - root - INFO - Cambiando a página 2
-2025-08-11 19:20:46 - root - INFO - Cambiando a página 0
-2025-08-11 19:20:47 - root - INFO - Cambiando a página 1
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 15
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:21:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 16
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:21:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:22:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:22:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 17
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:23:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:23:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 18
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:24:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:24:02 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 19
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:25:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:25:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:25:47 - root - INFO - Timeout de 300s. Apagando pantalla.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 20
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:26:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:26:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 21
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:27:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:27:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 22
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:28:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:28:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 23
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:29:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:29:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 24
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:30:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:30:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 25
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:31:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 26
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:31:59 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:32:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:32:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 27
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:33:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:33:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 28
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:34:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:34:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 29
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:35:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:35:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 30
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:01 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:36:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:36:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 31
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:37:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:37:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 32
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:38:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:38:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 33
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:39:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:39:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 34
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:00 - root - INFO - Datos de 'Estacion Exterior' reenviados a ThingsBoard.
-2025-08-11 19:40:02 - root - INFO - Iniciando lectura de sensores y sistema local...
-2025-08-11 19:40:03 - root - INFO - Datos de 'Estacion Interior' reenviados a ThingsBoard.
+--- start.sh iniciado por rc.local como ROOT a las Sun 24 Aug 20:54:08 CEST 2025 ---
+Directorio de trabajo: /home/pizero/estacion_meteo
+Lanzando main.py desde el venv de pizero...
+2025-08-24 20:54:30 - root - INFO - --- Iniciando Estación Meteorológica vFinal ---
+2025-08-24 20:54:30 - hardware_manager - INFO - Cargando iconos...
+2025-08-24 20:54:31 - hardware_manager - INFO - Fuentes DejaVu cargadas correctamente.
+2025-08-24 20:54:31 - root - INFO - NeoPixels en pin 21 inicializados.
+2025-08-24 20:54:31 - root - INFO - Sensor BME280 inicializado.
+2025-08-24 20:54:31 - hardware_manager - INFO - Botón configurado en pin GPIO 6.
+2025-08-24 20:54:31 - hardware_manager - INFO - Hardware Manager completamente inicializado.
+2025-08-24 20:54:31 - root - INFO - Conectando al broker MQTT local en 127.0.0.1...
+2025-08-24 20:54:31 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 20:54:31 - root - INFO - Conexión exitosa al Broker MQTT local.
+2025-08-24 20:54:31 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 1
+2025-08-24 20:54:34 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 2
+2025-08-24 20:56:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 20:56:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 3
+2025-08-24 20:57:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 20:57:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 4
+2025-08-24 20:58:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 20:58:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 5
+2025-08-24 20:59:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 20:59:31 - root - INFO - Timeout de 300s. Apagando pantalla.
+2025-08-24 20:59:54 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 6
+2025-08-24 21:00:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:00:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 7
+2025-08-24 21:01:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:01:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 8
+2025-08-24 21:02:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:02:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 9
+2025-08-24 21:03:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:03:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 10
+2025-08-24 21:04:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:04:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 11
+2025-08-24 21:05:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:05:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 12
+2025-08-24 21:06:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:06:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 13
+2025-08-24 21:07:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:07:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 14
+2025-08-24 21:08:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:08:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 15
+2025-08-24 21:09:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:09:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 16
+2025-08-24 21:10:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:10:53 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 17
+2025-08-24 21:11:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:11:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 18
+2025-08-24 21:12:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:12:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 19
+2025-08-24 21:13:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:13:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 20
+2025-08-24 21:14:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:14:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 21
+2025-08-24 21:15:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:15:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 22
+2025-08-24 21:16:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:16:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 23
+2025-08-24 21:17:03 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:17:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 24
+2025-08-24 21:18:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:18:53 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 25
+2025-08-24 21:19:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:19:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 26
+2025-08-24 21:20:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:20:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 27
+2025-08-24 21:21:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:21:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 28
+2025-08-24 21:22:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:22:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 29
+2025-08-24 21:23:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:23:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 30
+2025-08-24 21:24:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:24:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 31
+2025-08-24 21:25:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:25:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 32
+2025-08-24 21:26:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:26:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 33
+2025-08-24 21:27:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:27:53 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 34
+2025-08-24 21:28:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:28:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 35
+2025-08-24 21:29:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:29:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 36
+2025-08-24 21:30:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:30:53 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 37
+2025-08-24 21:31:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:31:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 38
+2025-08-24 21:32:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:32:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 39
+2025-08-24 21:33:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:33:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 40
+2025-08-24 21:34:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:34:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 41
+2025-08-24 21:35:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:35:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 42
+2025-08-24 21:36:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:36:54 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 43
+2025-08-24 21:37:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:37:53 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 44
+2025-08-24 21:38:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:38:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 45
+2025-08-24 21:39:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:39:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 46
+2025-08-24 21:40:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:40:51 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 47
+2025-08-24 21:41:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:41:29 - root - INFO - Pantalla encendida por actividad.
+2025-08-24 21:41:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 48
+2025-08-24 21:41:53 - root - INFO - Cambiando a página 1
+2025-08-24 21:41:59 - root - INFO - Cambiando a página 2
+2025-08-24 21:42:01 - root - INFO - Cambiando a página 0
+2025-08-24 21:42:04 - root - INFO - Iniciando lectura de sensores y sistema local...
+2025-08-24 21:42:52 - root - INFO - Nuevo dato de temperatura añadido al historial. Tamaño actual: 49
+2025-08-24 21:43:04 - root - INFO - Iniciando lectura de sensores y sistema local...

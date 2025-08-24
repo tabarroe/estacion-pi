@@ -49,8 +49,7 @@ class WeatherStation:
         self.is_backlight_on = True
         
         self.setup_mqtt_local()
-        self.setup_mqtt_thingsboard()
-
+        
     # --- Funciones de Cálculo ---
     def update_stats(self, location, temp):
         if temp is None or location != "exterior": return
@@ -218,7 +217,7 @@ class WeatherStation:
             if sensor_type in self.data_store["exterior"]:
                 value = float(payload)
                 self.data_store["exterior"][sensor_type] = value
-                self.forward_to_thingsboard("Estacion Exterior", {sensor_type: value})
+                
                 
                 if sensor_type == "temperatura":
                     self.update_stats("exterior", value)
@@ -236,10 +235,10 @@ class WeatherStation:
                         heat_index = self.calculate_heat_index(temp, hum)
                         if heat_index is not None:
                             self.data_store["exterior"]["dew_point"] = round(dew_point_ext, 1)
-                            self.forward_to_thingsboard("Estacion Exterior", {"dew_point": self.data_store["exterior"]["dew_point"]})
+                            
                                         
                             self.data_store["exterior"]["indice_calor"] = round(heat_index, 1)
-                            self.forward_to_thingsboard("Estacion Exterior", {"indice_calor": self.data_store["exterior"]["indice_calor"]})
+                            
                 elif sensor_type == "presion":
                     self.pressure_history.append(value)
                     self.calculate_pressure_trend()
@@ -263,36 +262,10 @@ class WeatherStation:
             logger.error(f"Error procesando mensaje MQTT: {e}", exc_info=True)
 #------------------------------------------------------------------------
 
-    def setup_mqtt_thingsboard(self):
-        tb_client_id = f"rpi_gateway_tb-{int(time.time())}"
-        self.tb_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=tb_client_id)
-        self.tb_client.username_pw_set(username=THINGSBOARD_GATEWAY_TOKEN, password=None)
-        self.tb_client.on_connect = self.on_mqtt_tb_connect
-        self.tb_client.on_disconnect = self.on_mqtt_tb_disconnect
-        try:
-            logger.info(f"Conectando al gateway de ThingsBoard en {THINGSBOARD_HOST}...")
-            self.tb_client.connect(THINGSBOARD_HOST, THINGSBOARD_PORT, 60)
-        except Exception as e:
-            logger.error(f"No se pudo conectar a ThingsBoard: {e}", exc_info=True)
+
  #---------------------------------------------------
  
-    def on_mqtt_tb_connect(self, client, userdata, flags, reason_code, properties):
-        if reason_code == 0:
-            logger.info("Conexión exitosa a ThingsBoard.")
-        else:
-            logger.error(f"Fallo al conectar a ThingsBoard, código: {reason_code}")
- #---------------------------------------------------
- 
-    def on_mqtt_tb_disconnect(self, client, userdata, *args):
-        logger.warning(f"Desconectado de ThingsBoard.")
- #---------------------------------------------------
- 
-    def forward_to_thingsboard(self, device_name, data):
-        if not self.tb_client.is_connected(): return
-        timestamp = int(time.time() * 1000)
-        payload = {device_name: [{"ts": timestamp, "values": data}]}
-        self.tb_client.publish('v1/gateway/telemetry', json.dumps(payload))
-        logger.info(f"Datos de '{device_name}' reenviados a ThingsBoard.")
+    
  #---------------------------------------------------
  
     # --- Tareas Periódicas ---
@@ -322,7 +295,7 @@ class WeatherStation:
             logger.error(f"Fallo al leer datos del sistema: {e}")
 
         telemetry_to_forward = {k: v for k, v in self.data_store["interior"].items() if v is not None}
-        self.forward_to_thingsboard("Estacion Interior", telemetry_to_forward)
+        
  #---------------------------------------------------
  
 #---------------------------------------------------------------------
@@ -444,7 +417,7 @@ class WeatherStation:
     # --- Bucle Principal ---
     def run(self):
         self.mqtt_local_client.loop_start()
-        self.tb_client.loop_start()
+        
         last_local_read, last_display_draw = 0, 0
 
         try:
@@ -498,7 +471,7 @@ class WeatherStation:
         finally:
             self.hw_manager.set_backlight(True)
             self.mqtt_local_client.loop_stop()
-            self.tb_client.loop_stop()
+            
             self.hw_manager.cleanup()
             logger.info("Aplicación cerrada limpiamente.")
 
